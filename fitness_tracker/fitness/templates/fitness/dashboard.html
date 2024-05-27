@@ -1,0 +1,72 @@
+{% extends 'fitness/base_generic.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Dashboard</h2>
+    <div class="row">
+        <div class="col-md-8">
+            <h3>Activities</h3>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <ul class="list-group">
+                        {% for activity in activities %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><strong>{{ activity.date }}:</strong> {{ activity.activity_type }} for {{ activity.duration }} covering {{ activity.distance }} km</span>
+                                <span class="badge badge-primary badge-pill">{{ activity.calories_burned }} kcal</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h3>Goals</h3>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <ul class="list-group">
+                        {% for goal in goals %}
+                            <li class="list-group-item">
+                                {{ goal.description }} by {{ goal.target_date }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-4">
+        <canvas id="activityChart" width="400" height="200"></canvas>
+    </div>
+    <div class="row justify-content-center mt-5 mb-5">
+        <div class="col-md-3 mb-2">
+            <a href="{% url 'log_activity' %}" class="btn btn-primary btn-block">Log Activity</a>
+        </div>
+        <div class="col-md-3 mb-2">
+            <a href="{% url 'set_goal' %}" class="btn btn-secondary btn-block">Set Goal</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    var ctx = document.getElementById('activityChart').getContext('2d');
+    var activityChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [{% for activity in activities %} '{{ activity.date }}', {% endfor %}],
+            datasets: [{
+                label: 'Distance (km)',
+                data: [{% for activity in activities %} {{ activity.distance }}, {% endfor %}],
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}
