@@ -72,10 +72,4 @@ A web application to track fitness activities and goals, built with Django. This
 
 Contributions are welcome! Please fork this repository and submit pull requests.
 
-## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-## Contact
-
-For questions or comments, please contact [Your Name](mailto:youremail@example.com).
